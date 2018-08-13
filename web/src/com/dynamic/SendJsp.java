@@ -17,7 +17,7 @@ public class SendJsp extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
-     * @see HttpServlet#HttpServlet()  llkl
+     * @see HttpServlet#HttpServlet()
      */
     public SendJsp() {
         super();
@@ -34,8 +34,6 @@ public class SendJsp extends HttpServlet {
 		String text = request.getParameter("txtTeste");
 		PrintWriter writer = response.getWriter();
 		writer.println(text);
-//		<input type="text" name="txtTeste" id="txtTeste" />
-//		<input type="submit" name="btnTeste" id="btnTeste" value="click"/>
 		writer.close();
 	}
 
