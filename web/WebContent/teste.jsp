@@ -13,7 +13,7 @@
 	</form>
 	<form name="frmTesteI" id="frmTesteI" action="AnotherTeste.jsp" method="post"> 
 		<input type="text" name="txtTeste" id="txtTeste" />
-		<input type="submit" name="btnTeste" id="btnTeste" value="click"/>
+		<input type="submit" name="btnTeste" id="btnTeste" value="clickII"/>
 	</form>
 </body>
 </html>

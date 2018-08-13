@@ -17,7 +17,7 @@ public class SendJsp extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
-     * @see HttpServlet#HttpServlet()
+     * @see HttpServlet#HttpServlet()  llkl
      */
     public SendJsp() {
         super();
