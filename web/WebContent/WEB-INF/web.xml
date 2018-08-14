@@ -7,20 +7,6 @@
     <welcome-file>index.jsp</welcome-file>
     <welcome-file>default.html</welcome-file>
     <welcome-file>default.htm</welcome-file>
-    <welcome-file>teste.jsp</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-<!-- 
-	<servlet>
-	  	<servlet-name>SendJsp</servlet-name>
-	  	<servlet-class>com.dynamic.SendJsp</servlet-class>
-	  	<init-param>
-	  		<param-name>name</param-name>
-	  		<param-value>text-xmls</param-value>
-	  	</init-param>
-	  	<init-param>
-	  		<param-name>value</param-name>
-	  		<param-value>10</param-value>
-	  	</init-param>
-	 </servlet>
-  -->
 </web-app>
