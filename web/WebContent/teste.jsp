@@ -27,7 +27,7 @@
 	</form>
 	<form name="frmTesteII" id="frmTesteI" action="ServletGetXml" method="get"> 
 		<input type="text" name="txtTesteXml" id="txtTesteXml" />
-		<input type="button" name="btnTesteXml" id="btnTesteXml" value="ServletXml"/>
+		<input type="submit" name="btnTesteXml" id="btnTesteXml" value="ServletXml"/>
 	</form>
 </body>
 </html>

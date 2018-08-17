@@ -13,8 +13,4 @@ var eventsRegistration = function(){
 		alert("AnotherTeste clicked");
 		$("#btnAnotherTeste").attr("disabled","disabled");
 	});
-
-	
-	
-	
 } ;

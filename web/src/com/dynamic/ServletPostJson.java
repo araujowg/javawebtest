@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
 
-import com.dynamic.ent.eUsuario;
+//import com.dynamic.ent.*;
 
 /**
  * Servlet implementation class SendJsp
@@ -54,12 +54,12 @@ public class ServletPostJson extends HttpServlet {
 		String text = request.getParameter("txtTeste");
 		PrintWriter writer = response.getWriter();
 		
-		ArrayList<com.dynamic.ent.eUsuario> listaUsers = new ArrayList<com.dynamic.ent.eUsuario>();
+		ArrayList<com.dynamic.ent.Usuario> listaUsers = new ArrayList<com.dynamic.ent.Usuario>();
 		
-		listaUsers.add(new eUsuario(1,"2", true));
-		listaUsers.add(new eUsuario(2,"2", false));
-		listaUsers.add(new eUsuario(3,"3", false));
-		listaUsers.add(new eUsuario(4,text, false));
+		listaUsers.add(new com.dynamic.ent.Usuario(1,"2", true));
+		listaUsers.add(new com.dynamic.ent.Usuario(2,"2", false));
+		listaUsers.add(new com.dynamic.ent.Usuario(3,"3", false));
+		listaUsers.add(new com.dynamic.ent.Usuario(4,text, false));
 		response.setContentType("application/json");
 		JSONArray saida = new JSONArray(listaUsers);
 		

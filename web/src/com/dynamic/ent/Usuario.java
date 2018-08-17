@@ -1,11 +1,11 @@
 package com.dynamic.ent;
 
-public class eUsuario {
+public class Usuario {
 	private int usuarioId;
 	private String nome;
 	private boolean ativo;
 	
-	public eUsuario(int usuarioId, String nome, boolean ativo){
+	public Usuario(int usuarioId, String nome, boolean ativo){
 		setUsuarioId(usuarioId);
 		setNome(nome);
 		setAtivo(ativo);
