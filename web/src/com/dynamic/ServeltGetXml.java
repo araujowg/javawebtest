@@ -25,8 +25,8 @@ public class ServeltGetXml extends HttpServlet {
 	public ServeltGetXml(){
 		super();
 	}
-		
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //		// TODO Auto-generated method stub
 		
 		PrintWriter writer = response.getWriter();
@@ -35,6 +35,7 @@ public class ServeltGetXml extends HttpServlet {
 		lstDepto.add(new Depto(1, "nome1", true));
 		lstDepto.add(new Depto(2, "nome2", false));
 		lstDepto.add(new Depto(3, "nome3", true));
+		lstDepto.add(new Depto(4, request.getParameter("txtTesteXml"), true));
 		
 		Deptos deptosData = new Deptos();
 		deptosData.setDepto(lstDepto);
