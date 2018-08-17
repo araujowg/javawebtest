@@ -25,7 +25,7 @@
 		<input type="text" name="txtAnotherTeste" id="txtAnotherTeste" />
 		<input type="button" name="btnAnotherTeste" id="btnAnotherTeste" value="AnotherTeste"/>
 	</form>
-	<form name="frmTesteII" id="frmTesteI" action="ServletGetXml" method="get"> 
+	<form name="frmTesteII" id="frmTesteI" action="GetXml" method="get"> 
 		<input type="text" name="txtTesteXml" id="txtTesteXml" />
 		<input type="submit" name="btnTesteXml" id="btnTesteXml" value="ServletXml"/>
 	</form>

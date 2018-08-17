@@ -37,7 +37,4 @@ public class Depto {
 	public void setAtivo(boolean ativo) {
 		this.ativo = ativo;
 	}
-	
-	
-	
 }
