@@ -21,13 +21,22 @@
 			</div>
 		</div>
 	</form>
-	<form name="frmTesteI" id="frmTesteI" action="AnotherTeste.jsp" method="post"> 
+	<form name="frmTesteI" id="frmTesteAnotherTeste" action="AnotherTeste.jsp" method="post"> 
 		<input type="text" name="txtAnotherTeste" id="txtAnotherTeste" />
 		<input type="button" name="btnAnotherTeste" id="btnAnotherTeste" value="AnotherTeste"/>
 	</form>
-	<form name="frmTesteII" id="frmTesteI" action="GetXml" method="post"> 
+	<form name="frmTesteII" id="frmTesteGetXml" action="GetXml" method="post"> 
 		<input type="text" name="txtTesteXml" id="txtTesteXml" />
 		<input type="submit" name="btnTesteXml" id="btnTesteXml" value="ServletXml"/>
 	</form>
+	
+	<form name="frmTesteII" id="frmTesteGetMongo" action="ServletGetMongoData" method="GET"> 
+		<input type="text" name="txtTesteGetMongo" id="txtTesteGetMongo" />
+		<input type="submit" name="btnTesteGetMongo" id="btnTesteGetMongo" value="ServletGetMongoData"/>
+	</form>
+	
+	
+	
+	
 </body>
 </html>
