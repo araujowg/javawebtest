@@ -35,6 +35,10 @@
 		<input type="submit" name="btnTesteGetMongo" id="btnTesteGetMongo" value="ServletGetMongoData"/>
 	</form>
 	
+	<form name="frmTesteII" id="frmTesteDynamoDB" action="ServletGetDynamoDB" method="GET"> 
+		<input type="text" name="txtTesteDynamoDB" id="txtTesteGetDynamoDB" />
+		<input type="submit" name="btnTesteDynamoDB" id="btnTesteGetDynamoDB" value="ServletGetDynamoDB"/>
+	</form>
 	
 	
 	
