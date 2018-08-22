@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
 
+import com.dynamic.ent.Usuario;
+
 /**
  * Servlet implementation class SendJsp
  */
@@ -49,10 +51,11 @@ public class ServletPostJson extends HttpServlet {
 		
 		ArrayList<com.dynamic.ent.Usuario> listaUsers = new ArrayList<com.dynamic.ent.Usuario>();
 		
-		listaUsers.add(new com.dynamic.ent.Usuario(1,"2", true));
-		listaUsers.add(new com.dynamic.ent.Usuario(2,"2", false));
-		listaUsers.add(new com.dynamic.ent.Usuario(3,"3", false));
-		listaUsers.add(new com.dynamic.ent.Usuario(4,text, false));
+		listaUsers.add(new Usuario(2, "teste02", "log2", "12/12/1994", false));
+		listaUsers.add(new Usuario(1, "teste01", "log1", "11/12/1994", true));
+		listaUsers.add(new Usuario(4, "teste04", "log4", "14/12/1994", true));
+		listaUsers.add(new Usuario(3, "t" + text, "l" + text, "13/12/1994", false));
+		
 		response.setContentType("application/json");
 		JSONArray saida = new JSONArray(listaUsers);
 		
