@@ -8,9 +8,14 @@ import java.util.Map;
 
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.ItemCollection;
+import com.amazonaws.services.dynamodbv2.document.PrimaryKey;
 import com.amazonaws.services.dynamodbv2.document.QueryOutcome;
+import com.amazonaws.services.dynamodbv2.document.UpdateItemOutcome;
+import com.amazonaws.services.dynamodbv2.document.spec.DeleteItemSpec;
 import com.amazonaws.services.dynamodbv2.document.spec.GetItemSpec;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
+import com.amazonaws.services.dynamodbv2.document.spec.UpdateItemSpec;
+import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import com.amazonaws.services.dynamodbv2.model.AttributeDefinition;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
@@ -20,13 +25,14 @@ import com.amazonaws.services.dynamodbv2.model.KeySchemaElement;
 import com.amazonaws.services.dynamodbv2.model.KeyType;
 import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
 import com.amazonaws.services.dynamodbv2.model.PutItemRequest;
+import com.amazonaws.services.dynamodbv2.model.ReturnValue;
 import com.amazonaws.services.dynamodbv2.model.ScalarAttributeType;
 import com.amazonaws.services.dynamodbv2.model.ScanRequest;
 import com.amazonaws.services.dynamodbv2.model.ScanResult;
 import com.amazonaws.services.dynamodbv2.util.TableUtils;
 import com.dynamic.ent.Usuario;
 
-public class users extends com.dynamic.data.DynamoDb {
+public class users extends com.dynamic.data.DynamoDb implements IUser {
 
 	public users() throws Exception {
 		super();
@@ -36,12 +42,12 @@ public class users extends com.dynamic.data.DynamoDb {
 
 	public Boolean addUser(List<Usuario> lstUser) throws Exception {
 		Boolean isComplete = false;
-		// init();
+
 		try {
 			for (Usuario usuario : lstUser) {
-				Map<String, Object> item = newItem(usuario);
 				table.putItem(new Item().withPrimaryKey("id", usuario.getUsuarioId(), "login", usuario.getLogin())
-						.withMap("user", item));
+						.with("nome", usuario.getNome()).with("birthDate", usuario.getBirthDate())
+						.withBoolean("ativo", usuario.isAtivo()));
 			}
 
 			isComplete = true;
@@ -54,7 +60,7 @@ public class users extends com.dynamic.data.DynamoDb {
 
 	public Boolean addUserWithAttributeValuesMethod(List<Usuario> lstUsers) throws Exception {
 		Boolean isComplete = false;
-		// init();
+
 		try {
 			for (Usuario usuario : lstUsers) {
 				Map<String, AttributeValue> item = newItemWithAttribute(usuario);
@@ -69,6 +75,7 @@ public class users extends com.dynamic.data.DynamoDb {
 		return isComplete;
 	}
 
+	// Query with GetItemSpec example (using key(s))
 	public Usuario getUserByIdAndLogin(int id, String login) throws Exception {
 		Usuario user = new Usuario();
 
@@ -86,9 +93,9 @@ public class users extends com.dynamic.data.DynamoDb {
 		return user;
 	}
 
+	// Query with ScanRequest example
 	public List<Usuario> getUserByName(String name) throws Exception {
 		List<Usuario> users = new ArrayList<Usuario>();
-		// init();
 
 		try {
 			HashMap<String, Condition> scan = new HashMap<String, Condition>();
@@ -117,7 +124,8 @@ public class users extends com.dynamic.data.DynamoDb {
 		return users;
 	}
 
-	public List<Usuario> getUserByQueryId(int id) {
+	// Query with QuerySpec example
+	public List<Usuario> getUserByQueryId(int id) throws Exception {
 
 		List<Usuario> users = new ArrayList<Usuario>();
 
@@ -143,21 +151,117 @@ public class users extends com.dynamic.data.DynamoDb {
 			user.setNome(item.getString("nome"));
 			user.setLogin(item.getString("login"));
 			user.setBirthDate(item.getString("birthDate"));
-			user.setAtivo(item.getBOOL("ativo"));
+			user.setAtivo(item.getBoolean("ativo"));
 			users.add(user);
 		}
 
 		return users;
 	}
 
-	private static Map<String, Object> newItem(Usuario user) {
-		Map<String, Object> item = new HashMap<String, Object>();
-		item.put("id", String.valueOf(user.getUsuarioId()));
-		item.put("nome", user.getNome());
-		item.put("ativo", user.isAtivo());
-		item.put("login", user.getLogin());
-		item.put("birthDate", user.getBirthDate());
-		return item;
+	// Query with ScanRequest example
+	public List<Usuario> getDisabledUsers() throws Exception {
+		List<Usuario> users = new ArrayList<Usuario>();
+
+		try {
+			HashMap<String, Condition> scan = new HashMap<String, Condition>();
+
+			Condition condition = new Condition().withComparisonOperator(ComparisonOperator.EQ.toString())
+					.withAttributeValueList(new AttributeValue().withBOOL(Boolean.FALSE));
+			scan.put("ativo", condition);
+
+			ScanRequest request = new ScanRequest(tableName).withScanFilter(scan);
+			ScanResult result = client.scan(request);
+
+			for (Map<String, AttributeValue> item : result.getItems()) {
+				Usuario user = new Usuario();
+				user.setUsuarioId(Integer.parseInt(item.get("id").getN()));
+				user.setLogin(item.get("login").getS());
+				users.add(user);
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+
+		return users;
+	}
+
+	// Query with ScanRequest example
+	public List<Usuario> getAllUsers() throws Exception {
+		List<Usuario> users = new ArrayList<Usuario>();
+
+		try {
+			ScanRequest request = new ScanRequest(tableName);
+			ScanResult result = client.scan(request);
+
+			for (Map<String, AttributeValue> item : result.getItems()) {
+				Usuario user = new Usuario();
+				user.setUsuarioId(Integer.parseInt(item.get("id").getN()));
+				user.setNome(item.get("nome").getS());
+				user.setLogin(item.get("login").getS());
+				user.setBirthDate(item.get("birthDate").getS());
+				user.setAtivo(item.get("ativo").getBOOL());
+				users.add(user);
+			}
+
+		} catch (Exception e) {
+			throw e;
+		}
+		return users;
+	}
+
+	// Update with UpdateItemSpec example
+	public Usuario updateUser(Usuario user) throws Exception {
+
+		Usuario updatedUser = new Usuario();
+
+		try {
+			UpdateItemSpec item = new UpdateItemSpec()
+					.withPrimaryKey("id", user.getUsuarioId(), "login", user.getLogin())
+					.withUpdateExpression("set nome = :newNome, ativo= :newAtivo")
+					.withValueMap(
+							new ValueMap().with(":newNome", user.getNome()).withBoolean(":newAtivo", user.isAtivo()))
+					.withReturnValues(ReturnValue.UPDATED_NEW);
+
+			// Conditional Update example
+			// UpdateItemSpec updateItemSpec = new UpdateItemSpec()
+			// .withPrimaryKey(new PrimaryKey("year", year, "title",
+			// title)).withUpdateExpression("remove info.actors[0]")
+			// .withConditionExpression("size(info.actors) >
+			// :num").withValueMap(new
+			// ValueMap().withNumber(":num", 3))
+			// .withReturnValues(ReturnValue.UPDATED_NEW);
+
+			// Update field with Increment option
+			// UpdateItemSpec updateItemSpec = new
+			// UpdateItemSpec().withPrimaryKey("year", year, "title", title)
+			// .withUpdateExpression("set info.rating = info.rating + :val")
+			// .withValueMap(new ValueMap().withNumber(":val",
+			// 1)).withReturnValues(ReturnValue.UPDATED_NEW);
+
+			UpdateItemOutcome out = table.updateItem(item);
+
+			if (out != null) {
+				updatedUser.setNome(out.getItem().getString("nome"));
+				updatedUser.setAtivo(out.getItem().getBoolean("ativo"));
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+		return updatedUser;
+	}
+
+	public Boolean deleteDisabledUsers() throws Exception {
+		try {
+			List<Usuario> users = getDisabledUsers();
+			for (Usuario usuario : users) {
+				DeleteItemSpec deleteItemSpec = new DeleteItemSpec()
+						.withPrimaryKey(new PrimaryKey("id", usuario.getUsuarioId(), "login", usuario.getLogin()));
+				table.deleteItem(deleteItemSpec);
+			}
+			return true;
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 	private static Map<String, AttributeValue> newItemWithAttribute(Usuario user) {
@@ -204,6 +308,16 @@ public class users extends com.dynamic.data.DynamoDb {
 	// item.put("rating", new AttributeValue(rating));
 	// item.put("fans", new AttributeValue().withSS(fans));
 	//
+	// return item;
+	// }
+
+	// private static Map<String, Object> newItem(Usuario user) {
+	// Map<String, Object> item = new HashMap<String, Object>();
+	// item.put("id", String.valueOf(user.getUsuarioId()));
+	// item.put("nome", user.getNome());
+	// item.put("ativo", user.isAtivo());
+	// item.put("login", user.getLogin());
+	// item.put("birthDate", user.getBirthDate());
 	// return item;
 	// }
 
