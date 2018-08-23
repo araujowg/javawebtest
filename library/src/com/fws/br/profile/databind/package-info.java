@@ -5,4 +5,4 @@
  * @author Quantum
  *
  */
-package com.fws.br.databind;
+package com.fws.br.profile.databind;
