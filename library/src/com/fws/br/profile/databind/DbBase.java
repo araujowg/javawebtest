@@ -8,7 +8,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Table;
 
-public abstract class DynamoDbBase {
+public abstract class DbBase {
 
 	protected AmazonDynamoDB client;
 	protected DynamoDB dynamoDB;
