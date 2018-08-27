@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fws.br.commom.Encryption;
 
 @JsonSerialize
 @JsonRootName("UserInfo")
@@ -12,12 +13,11 @@ public class UserInfo implements Serializable {
 	 * User Entity
 	 */
 	private static final long serialVersionUID = -8786417616433546832L;
-	private int userId;
+	private String userId;
 	private String name;
 	private String login;
-	private String birthDate;
-	private boolean active;
 	private String email;
+	private boolean active;
 	private String password;
 	private int accessCounter;
 	private boolean blocked;
@@ -25,10 +25,9 @@ public class UserInfo implements Serializable {
 	public UserInfo() {
 	}
 
-	public UserInfo(int userId, String login, String password, String name, String email, String birthDate,
-			boolean active, boolean blocked) {
+	public UserInfo(String userId, String login, String password, String name, String email, boolean active,
+			boolean blocked) {
 		setActive(active);
-		setBirthDate(birthDate);
 		setBlocked(blocked);
 		setEmail(email);
 		setLogin(login);
@@ -51,14 +50,6 @@ public class UserInfo implements Serializable {
 
 	public void setActive(boolean active) {
 		this.active = active;
-	}
-
-	public String getBirthDate() {
-		return birthDate;
-	}
-
-	public void setBirthDate(String birthDate) {
-		this.birthDate = birthDate;
 	}
 
 	public boolean isBlocked() {
@@ -98,14 +89,14 @@ public class UserInfo implements Serializable {
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.password = Encryption.Generate(password);
 	}
 
-	public int getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
@@ -120,13 +111,12 @@ public class UserInfo implements Serializable {
 		int result = 1;
 		result = prime * result + accessCounter;
 		result = prime * result + (active ? 1231 : 1237);
-		result = prime * result + ((birthDate == null) ? 0 : birthDate.hashCode());
 		result = prime * result + (blocked ? 1231 : 1237);
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((login == null) ? 0 : login.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		result = prime * result + userId;
+		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
 		return result;
 	}
 
@@ -147,11 +137,6 @@ public class UserInfo implements Serializable {
 		if (accessCounter != other.accessCounter)
 			return false;
 		if (active != other.active)
-			return false;
-		if (birthDate == null) {
-			if (other.birthDate != null)
-				return false;
-		} else if (!birthDate.equals(other.birthDate))
 			return false;
 		if (blocked != other.blocked)
 			return false;
@@ -187,8 +172,7 @@ public class UserInfo implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "UserInfo [userId=" + userId + ", name=" + name + ", login=" + login + ", birthDate=" + birthDate
-				+ ", active=" + active + ", email=" + email + ", password=" + password + ", accessCounter="
-				+ accessCounter + ", blocked=" + blocked + "]";
+		return "UserInfo [userId=" + userId + ", name=" + name + ", login=" + login + ", active=" + active + ", email="
+				+ email + ", password=" + password + ", accessCounter=" + accessCounter + ", blocked=" + blocked + "]";
 	}
 }

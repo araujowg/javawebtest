@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.ItemCollection;
@@ -55,14 +56,13 @@ public class UserData extends DbBase {
 	 */
 	public Boolean addUser(UserInfo userInfo) throws Exception {
 		Boolean isComplete = false;
-
+		UUID uuid = UUID.randomUUID();
 		try {
 			table.putItem(new Item().withPrimaryKey("userId", userInfo.getUserId(), "login", userInfo.getLogin())
-					.withString("birthDate", userInfo.getBirthDate()).withString("email", userInfo.getEmail())
-					.withString("login", userInfo.getLogin()).withString("name", userInfo.getName())
-					.withString("ssh", userInfo.getPassword()).withInt("userId", userInfo.getUserId())
-					.withBoolean("active", userInfo.isActive()).withBoolean("blocked", userInfo.isBlocked())
-					.withInt("counter", 0));
+					.withString("email", userInfo.getEmail()).withString("login", userInfo.getLogin())
+					.withString("name", userInfo.getName()).withString("ssh", userInfo.getPassword())
+					.withString("userId", uuid.toString()).withBoolean("active", userInfo.isActive())
+					.withBoolean("blocked", userInfo.isBlocked()).withInt("counter", 0));
 			isComplete = true;
 		} catch (Exception e) {
 			isComplete = false;
@@ -110,7 +110,7 @@ public class UserData extends DbBase {
 	 * @return
 	 * @throws Exception
 	 * 
-	 *             Query with ScanRequest example
+	 * @Details Query with ScanRequest example
 	 * 
 	 */
 	public List<UserInfo> getUserByName(String name) throws Exception {
@@ -139,20 +139,60 @@ public class UserData extends DbBase {
 	 * @param login
 	 * @return User info if data found or null if data not found
 	 * @throws Exception
-	 * 
-	 *             Query with ScanRequest example
-	 * 
+	 * @Details Query with ScanRequest example
 	 */
-	public UserInfo getUserByLogin(String login) throws Exception {
+	public UserInfo getUserByLoginOrEmail(String login, String email) throws Exception {
+		UserInfo user = null;
+		try {
+
+			// HashMap<String, Condition> scan = new HashMap<String,
+			// Condition>();
+			//
+			// if (!login.isEmpty())
+			// scan.put("login", new
+			// Condition().withComparisonOperator(ComparisonOperator.EQ.toString())
+			// .withAttributeValueList(new AttributeValue().withS(login)));
+			//
+			// if (!email.isEmpty())
+			// scan.put("email", new
+			// Condition().withComparisonOperator(ComparisonOperator.EQ.toString())
+			// .withAttributeValueList(new AttributeValue().withS(email)));
+			//
+			// ScanRequest request = new
+			// ScanRequest(tableName).withScanFilter(scan);
+			// ScanResult result = client.scan(request);
+			//
+			//
+			// Iterator<Item> iterator = ;
+			// Item item = null;
+			// while (iterator.hasNext()) {
+			// item = iterator.next();
+			// user = specItemToObejct(item);
+			// }
+
+		} catch (Exception e) {
+			throw e;
+		}
+
+		return user;
+	}
+
+	/**
+	 * @param email
+	 * @return User info if data found or null if data not found
+	 * @throws Exception
+	 * @Details Query with ScanRequest example
+	 */
+	public UserInfo getUserByEmail(String email) throws Exception {
 		UserInfo user = null;
 		try {
 			HashMap<String, String> nameMap = new HashMap<String, String>();
-			nameMap.put("#key", "login");
+			nameMap.put("#key", "email");
 
 			HashMap<String, Object> valueMap = new HashMap<String, Object>();
-			valueMap.put(":login", login);
+			valueMap.put(":email", email);
 
-			QuerySpec querySpec = new QuerySpec().withKeyConditionExpression("#key = :login").withNameMap(nameMap)
+			QuerySpec querySpec = new QuerySpec().withKeyConditionExpression("#key = :email").withNameMap(nameMap)
 					.withValueMap(valueMap);
 
 			ItemCollection<QueryOutcome> items = table.query(querySpec);
@@ -211,8 +251,7 @@ public class UserData extends DbBase {
 	/**
 	 * @return List of active users
 	 * @throws Exception
-	 * 
-	 *             Query with ScanRequest example
+	 * @Details Query with ScanRequest example
 	 */
 	public List<UserInfo> getDisabledUsers() throws Exception {
 		List<UserInfo> users = new ArrayList<UserInfo>();
@@ -239,9 +278,7 @@ public class UserData extends DbBase {
 	/**
 	 * @return List of all Users
 	 * @throws Exception
-	 * 
-	 *             Query with ScanRequest example
-	 * 
+	 * @Details Query with ScanRequest example
 	 */
 	public List<UserInfo> getAllUsers() throws Exception {
 		List<UserInfo> users = new ArrayList<UserInfo>();
@@ -261,18 +298,15 @@ public class UserData extends DbBase {
 	 *            info
 	 * @return Success or failure
 	 * @throws Exception
-	 * 
-	 *             Update with UpdateItemSpec example
-	 * 
+	 * @Details Update with UpdateItemSpec example
 	 */
 	public Boolean updateUser(UserInfo user) throws Exception {
 
 		try {
 			UpdateItemSpec item = new UpdateItemSpec()
 					.withPrimaryKey("userId", user.getUserId(), "login", user.getLogin())
-					.withUpdateExpression("set birthDate = :birthDate,  name = :newNome")
-					.withValueMap(
-							new ValueMap().with(":birthDate", user.getBirthDate()).with(":newName", user.getName()))
+					.withUpdateExpression("set name = :newNome")
+					.withValueMap(new ValueMap().with(":newName", user.getName()))
 					// .withBoolean(":newActive", user.isActive()))
 					.withReturnValues(ReturnValue.UPDATED_NEW);
 
@@ -292,8 +326,7 @@ public class UserData extends DbBase {
 	 *            info (user id, login)
 	 * @return Number of times that login was verify
 	 * @throws Exception
-	 * 
-	 *             incremental update example
+	 * @Details incremental update example
 	 * 
 	 */
 	public Integer addCountAccess(UserInfo user) throws Exception {
@@ -344,13 +377,13 @@ public class UserData extends DbBase {
 	 * @return mapped and processed data to insert in table
 	 */
 	private static Map<String, AttributeValue> newItemWithAttribute(UserInfo userInfo) {
+		UUID uuid = UUID.randomUUID();
 		Map<String, AttributeValue> item = new HashMap<String, AttributeValue>();
-		item.put("birthDate", new AttributeValue(userInfo.getBirthDate()));
 		item.put("email", new AttributeValue(userInfo.getEmail()));
 		item.put("login", new AttributeValue(userInfo.getLogin()));
 		item.put("name", new AttributeValue(userInfo.getName()));
 		item.put("ssh", new AttributeValue(userInfo.getPassword()));
-		item.put("userId", new AttributeValue().withN(Integer.toString(userInfo.getUserId())));
+		item.put("userId", new AttributeValue().withS(uuid.toString()));
 		item.put("active", new AttributeValue().withBOOL(userInfo.isActive()));
 		item.put("blocked", new AttributeValue().withBOOL(userInfo.isBlocked()));
 		item.put("counter", new AttributeValue().withN(Integer.toString(0)));
@@ -359,20 +392,44 @@ public class UserData extends DbBase {
 
 	@Override
 	public void createTable() {
+
+		ArrayList<KeySchemaElement> keySchema = new ArrayList<KeySchemaElement>();
+		keySchema.add(new KeySchemaElement().withAttributeName("userId").withKeyType(KeyType.HASH));
+		keySchema.add(new KeySchemaElement().withAttributeName("login").withKeyType(KeyType.RANGE));
+		// keySchema.add(new
+		// KeySchemaElement().withAttributeName("email").withKeyType(KeyType.RANGE));
+
+		ArrayList<AttributeDefinition> attrDefinitions = new ArrayList<AttributeDefinition>();
+		attrDefinitions
+				.add(new AttributeDefinition().withAttributeName("userId").withAttributeType(ScalarAttributeType.S));
+		attrDefinitions
+				.add(new AttributeDefinition().withAttributeName("login").withAttributeType(ScalarAttributeType.S));
+		// attrDefinitions .add(new
+		// AttributeDefinition().withAttributeName("email").withAttributeType(ScalarAttributeType.S));
+
 		CreateTableRequest createTableRequest = new CreateTableRequest().withTableName(tableName)
-				.withKeySchema(new KeySchemaElement().withAttributeName("userId").withKeyType(KeyType.HASH))
-				.withKeySchema(new KeySchemaElement().withAttributeName("login").withKeyType(KeyType.RANGE))
-				.withAttributeDefinitions(
-						new AttributeDefinition().withAttributeName("userId").withAttributeType(ScalarAttributeType.N))
-				.withAttributeDefinitions(
-						new AttributeDefinition().withAttributeName("login").withAttributeType(ScalarAttributeType.S))
+				.withKeySchema(keySchema).withAttributeDefinitions(attrDefinitions)
 				.withProvisionedThroughput(new ProvisionedThroughput(10L, 10L));
+
+		// CreateTableRequest createTableRequest = new
+		// CreateTableRequest().withTableName(tableName)
+		// .withKeySchema(new
+		// KeySchemaElement().withAttributeName("userId").withKeyType(KeyType.HASH))
+		// .withAttributeDefinitions(
+		// new
+		// AttributeDefinition().withAttributeName("login").withAttributeType(ScalarAttributeType.S))
+		// .withAttributeDefinitions(
+		// new
+		// AttributeDefinition().withAttributeName("email").withAttributeType(ScalarAttributeType.S))
+		// .withProvisionedThroughput(new ProvisionedThroughput(10L, 10L));
 
 		TableUtils.createTableIfNotExists(client, createTableRequest);
 		try {
-
 			TableUtils.waitUntilActive(client, tableName);
-		} catch (TableNeverTransitionedToStateException | InterruptedException e) {
+		} catch (TableNeverTransitionedToStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -391,9 +448,6 @@ public class UserData extends DbBase {
 			for (Map<String, AttributeValue> item : result.getItems()) {
 				UserInfo user = new UserInfo();
 
-				if (!item.get("birthDate").isNULL())
-					user.setBirthDate(item.get("birthDate").getS());
-
 				if (!item.get("email").isNULL())
 					user.setEmail(item.get("email").getS());
 
@@ -407,7 +461,7 @@ public class UserData extends DbBase {
 					user.setPassword(item.get("ssh").getS());
 
 				if (!item.get("userId").isNULL())
-					user.setUserId(Integer.getInteger(item.get("userId").getN()));
+					user.setUserId(item.get("userId").getS());
 
 				if (!item.get("counter").isNULL())
 					user.setAccessCounter(Integer.getInteger(item.get("counter").getN()));
@@ -428,16 +482,14 @@ public class UserData extends DbBase {
 
 	/**
 	 * @param item
-	 * @return User info attibutes
+	 * @return User info attributes
+	 * @throws Exception
 	 */
-	private UserInfo specItemToObejct(Item item) {
+	private UserInfo specItemToObejct(Item item) throws Exception {
 		UserInfo user = null;
 		try {
 			if (item != null) {
 				user = new UserInfo();
-
-				if (item.get("birthDate") != null)
-					user.setBirthDate(item.getString("birthDate"));
 
 				if (item.get("email") != null)
 					user.setEmail(item.getString("email"));
@@ -452,7 +504,7 @@ public class UserData extends DbBase {
 					user.setPassword(item.getString("ssh"));
 
 				if (item.get("userId") != null)
-					user.setUserId(item.getInt("userId"));
+					user.setUserId(item.getString("userId"));
 
 				if (item.get("counter") != null)
 					user.setAccessCounter(item.getInt("counter"));

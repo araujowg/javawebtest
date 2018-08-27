@@ -7,29 +7,6 @@ import com.fws.br.profile.entities.UserInfo;
 
 public class User {
 
-	/**
-	 * @param login
-	 * @param pwd
-	 * @return
-	 * @throws Exception
-	 */
-	public Boolean doLogin(String login, String pwd) throws Exception {
-		try {
-			UserData data = new UserData();
-			UserInfo user = data.getUserByLogin(login);
-			if (user.getPassword().equals(pwd))
-				return true;
-		} catch (Exception e) {
-			throw e;
-		}
-		return false;
-	}
-
-	/**
-	 * @param userInfo
-	 * @return
-	 * @throws Exception
-	 */
 	public Boolean addUser(UserInfo userInfo) throws Exception {
 		try {
 			UserData data = new UserData();
@@ -40,11 +17,6 @@ public class User {
 		}
 	}
 
-	/**
-	 * @param users
-	 * @return
-	 * @throws Exception
-	 */
 	public Boolean addManyUsers(List<UserInfo> users) throws Exception {
 		String message = "";
 

@@ -40,7 +40,39 @@
 		<input type="submit" name="btnTesteDynamoDB" id="btnTesteGetDynamoDB" value="ServletGetDynamoDB"/>
 	</form>
 	
+	<form name="frmUserCore" id="frmUserCore" action="User" method="Post"> 
+		<div>
+			<label>login</label>
+			<input type="text" name="login" id="login" />
+		</div>
+		<div>
+			<label>email</label>
+			<input type="text" name="email" id="email" />
+		</div>
+		<div>
+			<label>nome</label>
+			<input type="text" name="nome" id="nome" />
+		</div>
+		<div>
+			<label>password</label>
+			<input type="text" name="pwd" id="pwd" />
+		</div>
+		<input type="submit" name="btnUserCore" id="btnUserCore" value="UserCore"/>
+	</form>
 	
+	<form name="frmLogin" id="frmLogin" action="Login" method="Post"> 
+		<div>
+			<label>login</label>
+			<input type="text" name="login" id="login" />
+		</div>
+		<div>
+			<label>password</label>
+			<input type="text" name="pwd" id="pwd" />
+		</div>
+		<input type="submit" name="btnLogin" id="btnLogin" value="Login"/>
+	</form>
+
+
 	
 </body>
 </html>
