@@ -1,10 +1,10 @@
-package com.fws.br.profile.entities;
+package com.fws.br.user.entity;
 
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fws.br.commom.Encryption;
+import com.fws.br.user.commom.Encryption;
 
 @JsonSerialize
 @JsonRootName("UserInfo")

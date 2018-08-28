@@ -1,4 +1,4 @@
-package com.fws.br.profile.databind;
+package com.fws.br.user.databind;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;

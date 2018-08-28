@@ -1,4 +1,4 @@
-package com.fws.br.profile.commom.enums;
+package com.fws.br.user.enums;
 
 public enum EnumLogin {
 	SUCCESS(1), FAILURE(2), EXECPTION(3);

@@ -3,7 +3,7 @@
 	<name>web</name>
 	<comment></comment>
 	<projects>
-		<project>profile</project>
+		<project>fws</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

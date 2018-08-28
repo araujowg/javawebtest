@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.fws.br.profile.entities.UserInfo;
+import com.fws.br.user.entity.UserInfo;
 
 @WebServlet("/User")
 public class User extends HttpServlet {
@@ -28,7 +28,7 @@ public class User extends HttpServlet {
 		String password = request.getParameter("pwd");
 
 		UserInfo userInfo = new UserInfo("", login, password, nome, email, true, false);
-		com.fws.br.profile.core.User core = new com.fws.br.profile.core.User();
+		com.fws.br.user.User core = new com.fws.br.user.User();
 
 		String out = "";
 

@@ -1,8 +1,8 @@
-package com.fws.br.profile.core;
+package com.fws.br.user;
 
-import com.fws.br.profile.commom.enums.EnumLogin;
-import com.fws.br.profile.databind.UserData;
-import com.fws.br.profile.entities.UserInfo;
+import com.fws.br.user.databind.UserData;
+import com.fws.br.user.entity.UserInfo;
+import com.fws.br.user.enums.EnumLogin;
 
 public class Login {
 

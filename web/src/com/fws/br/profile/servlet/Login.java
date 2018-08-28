@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.fws.br.profile.commom.enums.EnumLogin;
+import com.fws.br.user.enums.EnumLogin;
 
 /**
  * Servlet implementation class Login
@@ -36,7 +36,7 @@ public class Login extends HttpServlet {
 		String login = request.getParameter("login");
 		String pwd = request.getParameter("pwd");
 		String out = "";
-		com.fws.br.profile.core.Login core = new com.fws.br.profile.core.Login();
+		com.fws.br.user.Login core = new com.fws.br.user.Login();
 
 		try {
 			EnumLogin info = core.doLogin(login, pwd);

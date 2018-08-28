@@ -1,9 +1,9 @@
-package com.fws.br.profile.core;
+package com.fws.br.user;
 
 import java.util.List;
 
-import com.fws.br.profile.databind.UserData;
-import com.fws.br.profile.entities.UserInfo;
+import com.fws.br.user.databind.UserData;
+import com.fws.br.user.entity.UserInfo;
 
 public class User {
 

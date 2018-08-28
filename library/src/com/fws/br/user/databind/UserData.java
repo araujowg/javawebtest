@@ -1,4 +1,4 @@
-package com.fws.br.profile.databind;
+package com.fws.br.user.databind;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +32,7 @@ import com.amazonaws.services.dynamodbv2.model.ScanRequest;
 import com.amazonaws.services.dynamodbv2.model.ScanResult;
 import com.amazonaws.services.dynamodbv2.util.TableUtils;
 import com.amazonaws.services.dynamodbv2.util.TableUtils.TableNeverTransitionedToStateException;
-import com.fws.br.profile.entities.UserInfo;
+import com.fws.br.user.entity.UserInfo;
 
 /**
  * @author Quantum
@@ -126,7 +126,7 @@ public class UserData extends DbBase {
 			ScanRequest request = new ScanRequest(tableName).withScanFilter(scan);
 			ScanResult result = client.scan(request);
 
-			scanResultToObject(users, result);
+			users = scanResultToObject(result);
 
 		} catch (Exception e) {
 			throw e;
@@ -145,30 +145,21 @@ public class UserData extends DbBase {
 		UserInfo user = null;
 		try {
 
-			// HashMap<String, Condition> scan = new HashMap<String,
-			// Condition>();
-			//
-			// if (!login.isEmpty())
-			// scan.put("login", new
-			// Condition().withComparisonOperator(ComparisonOperator.EQ.toString())
-			// .withAttributeValueList(new AttributeValue().withS(login)));
-			//
-			// if (!email.isEmpty())
-			// scan.put("email", new
-			// Condition().withComparisonOperator(ComparisonOperator.EQ.toString())
-			// .withAttributeValueList(new AttributeValue().withS(email)));
-			//
-			// ScanRequest request = new
-			// ScanRequest(tableName).withScanFilter(scan);
-			// ScanResult result = client.scan(request);
-			//
-			//
-			// Iterator<Item> iterator = ;
-			// Item item = null;
-			// while (iterator.hasNext()) {
-			// item = iterator.next();
-			// user = specItemToObejct(item);
-			// }
+			HashMap<String, Condition> scan = new HashMap<String, Condition>();
+
+			if (!login.isEmpty())
+				scan.put("login", new Condition().withComparisonOperator(ComparisonOperator.EQ.toString())
+						.withAttributeValueList(new AttributeValue().withS(login)));
+
+			if (!email.isEmpty())
+				scan.put("email", new Condition().withComparisonOperator(ComparisonOperator.EQ.toString())
+						.withAttributeValueList(new AttributeValue().withS(email)));
+
+			ScanRequest request = new ScanRequest(tableName).withScanFilter(scan);
+			ScanResult result = client.scan(request);
+
+			if (result != null && result.getCount() > 0)
+				user = scanResultToObject(result).get(0);
 
 		} catch (Exception e) {
 			throw e;
@@ -266,7 +257,7 @@ public class UserData extends DbBase {
 			ScanRequest request = new ScanRequest(tableName).withScanFilter(scan);
 			ScanResult result = client.scan(request);
 
-			scanResultToObject(users, result);
+			users = scanResultToObject(result);
 
 		} catch (Exception e) {
 			throw e;
@@ -285,7 +276,7 @@ public class UserData extends DbBase {
 		try {
 			ScanRequest request = new ScanRequest(tableName);
 			ScanResult result = client.scan(request);
-			scanResultToObject(users, result);
+			users = scanResultToObject(result);
 
 		} catch (Exception e) {
 			throw e;
@@ -442,8 +433,8 @@ public class UserData extends DbBase {
 	 *            of UserInfo objects
 	 * @throws Exception
 	 */
-	private void scanResultToObject(List<UserInfo> users, ScanResult result) throws Exception {
-
+	private List<UserInfo> scanResultToObject(ScanResult result) throws Exception {
+		List<UserInfo> users = new ArrayList<UserInfo>();
 		try {
 			for (Map<String, AttributeValue> item : result.getItems()) {
 				UserInfo user = new UserInfo();
@@ -476,8 +467,9 @@ public class UserData extends DbBase {
 			}
 
 		} catch (Exception e) {
-
+			users.clear();
 		}
+		return users;
 	}
 
 	/**
