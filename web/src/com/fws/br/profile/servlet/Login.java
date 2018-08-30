@@ -1,15 +1,12 @@
 package com.fws.br.profile.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.fws.br.user.enums.EnumLogin;
 
 /**
  * Servlet implementation class Login
@@ -33,22 +30,22 @@ public class Login extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 
-		String login = request.getParameter("login");
-		String pwd = request.getParameter("pwd");
-		String out = "";
-		com.fws.br.user.Login core = new com.fws.br.user.Login();
-
-		try {
-			EnumLogin info = core.doLogin(login, pwd);
-			out = info.getMessage();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		response.setContentType("application/json");
-		PrintWriter writer = response.getWriter();
-		writer.println(out);
-		writer.close();
+		// String login = request.getParameter("login");
+		// String pwd = request.getParameter("pwd");
+		// String out = "";
+		// br.com.fws.user.Login core = new br.com.fws.user.Login();
+		//
+		// try {
+		// EnumLogin info = core.doLogin(login, pwd);
+		// out = info.getMessage();
+		//
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		//
+		// response.setContentType("application/json");
+		// PrintWriter writer = response.getWriter();
+		// writer.println(out);
+		// writer.close();
 	}
 }

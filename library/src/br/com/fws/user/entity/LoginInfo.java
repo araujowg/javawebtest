@@ -1,4 +1,4 @@
-package com.fws.br.user.entity;
+package br.com.fws.user.entity;
 
 import java.io.Serializable;
 
@@ -13,23 +13,26 @@ public class LoginInfo implements Serializable {
 	private boolean active;
 	private int accessCounter;
 	private boolean blocked;
-	private String email;
 	private String login;
-	private String name;
 	private String password;
+	private String ultimoAcesso;
 	private String userId;
+	private UserInfo user;
 
-	public LoginInfo(boolean active, int accessCounter, boolean blocked, String email, String login, String name,
-			String password, String userId) {
+	public LoginInfo(boolean active, int accessCounter, boolean blocked, String login, String password, String userId,
+			UserInfo user) {
 		super();
 		this.active = active;
 		this.accessCounter = accessCounter;
 		this.blocked = blocked;
-		this.email = email;
 		this.login = login;
-		this.name = name;
 		this.password = password;
 		this.userId = userId;
+		this.setUser(user);
+	}
+
+	public LoginInfo() {
+
 	}
 
 	public boolean isActive() {
@@ -56,28 +59,12 @@ public class LoginInfo implements Serializable {
 		this.blocked = blocked;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	public String getLogin() {
 		return login;
 	}
 
 	public void setLogin(String login) {
 		this.login = login;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getPassword() {
@@ -88,12 +75,28 @@ public class LoginInfo implements Serializable {
 		this.password = password;
 	}
 
+	public String getUltimoAcesso() {
+		return ultimoAcesso;
+	}
+
+	public void setUltimoAcesso(String ultimoAcesso) {
+		this.ultimoAcesso = ultimoAcesso;
+	}
+
 	public String getUserId() {
 		return userId;
 	}
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public UserInfo getUser() {
+		return user;
+	}
+
+	public void setUser(UserInfo user) {
+		this.user = user;
 	}
 
 	/*
@@ -104,8 +107,9 @@ public class LoginInfo implements Serializable {
 	@Override
 	public String toString() {
 		return "LoginInfo [active=" + active + ", accessCounter=" + accessCounter + ", blocked=" + blocked + ", "
-				+ (email != null ? "email=" + email + ", " : "") + (login != null ? "login=" + login + ", " : "")
-				+ (name != null ? "name=" + name + ", " : "") + (password != null ? "password=" + password + ", " : "")
+				+ (login != null ? "login=" + login + ", " : "")
+				+ (password != null ? "password=" + password + ", " : "")
+				+ (ultimoAcesso != null ? "ultimoAcesso=" + ultimoAcesso : "")
 				+ (userId != null ? "userId=" + userId : "") + "]";
 	}
 
@@ -118,9 +122,7 @@ public class LoginInfo implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((login == null) ? 0 : login.hashCode());
-		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
 		return result;
 	}
@@ -139,11 +141,6 @@ public class LoginInfo implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		LoginInfo other = (LoginInfo) obj;
-		if (email == null) {
-			if (other.email != null)
-				return false;
-		} else if (!email.equals(other.email))
-			return false;
 		if (login == null) {
 			if (other.login != null)
 				return false;

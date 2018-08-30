@@ -1,4 +1,4 @@
-package com.fws.br.user.commom;
+package br.com.fws.commom;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;

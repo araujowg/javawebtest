@@ -1,9 +1,9 @@
-package com.fws.br.user;
+package br.com.fws.user.core;
 
 import java.util.List;
 
-import com.fws.br.user.databind.UserData;
-import com.fws.br.user.entity.UserInfo;
+import br.com.fws.user.databind.UserData;
+import br.com.fws.user.entity.UserInfo;
 
 public class User {
 
@@ -39,6 +39,16 @@ public class User {
 		} catch (Exception e) {
 			throw e;
 		}
+	}
+
+	public Boolean updateUser(UserInfo user) throws Exception {
+		try {
+			UserData data = new UserData();
+			return data.updateUser(user);
+		} catch (Exception e) {
+			throw e;
+		}
+
 	}
 
 }

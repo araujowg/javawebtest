@@ -1,0 +1,35 @@
+<!-- Use this file to deploy some handlers/chains and services      -->
+<!-- Two ways to do this:                                           -->
+<!--   java org.apache.axis.client.AdminClient deploy.wsdd          -->
+<!--      after the axis server is running                          -->
+<!-- or                                                             -->
+<!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   -->
+<!--      from the same directory that the Axis engine runs         -->
+
+<deployment
+    xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from LoginService WSDL service -->
+
+  <service name="Login" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://core.user.fws.com.br"/>
+      <parameter name="wsdlServiceElement" value="LoginService"/>
+      <parameter name="schemaQualified" value="http://core.user.fws.com.br"/>
+      <parameter name="wsdlServicePort" value="Login"/>
+      <parameter name="className" value="br.com.fws.user.core.LoginSoapBindingImpl"/>
+      <parameter name="wsdlPortType" value="Login"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="addLogin" qname="operNS:addLogin" xmlns:operNS="http://core.user.fws.com.br" returnQName="retNS:addLoginReturn" xmlns:retNS="http://core.user.fws.com.br" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="pns:login" xmlns:pns="http://core.user.fws.com.br" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:pwd" xmlns:pns="http://core.user.fws.com.br" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:email" xmlns:pns="http://core.user.fws.com.br" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="doLogin" qname="operNS:doLogin" xmlns:operNS="http://core.user.fws.com.br" returnQName="retNS:doLoginReturn" xmlns:retNS="http://core.user.fws.com.br" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="pns:login" xmlns:pns="http://core.user.fws.com.br" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:pwd" xmlns:pns="http://core.user.fws.com.br" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <parameter name="allowedMethods" value="addLogin doLogin"/>
+
+  </service>
+</deployment>
