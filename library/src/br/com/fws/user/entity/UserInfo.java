@@ -2,11 +2,14 @@ package br.com.fws.user.entity;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @JsonSerialize
 @JsonRootName("UserInfo")
+@XmlRootElement
 public class UserInfo implements Serializable {
 	/**
 	 * User Entity

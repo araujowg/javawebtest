@@ -27,5 +27,6 @@
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 		</attributes>
 	</classpathentry>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/webserviceclient"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

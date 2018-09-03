@@ -22,22 +22,38 @@
  <ns1:handler name="URLMapper" type="java:org.apache.axis.handlers.http.URLMapper"/>
  <ns1:handler name="LocalResponder" type="java:org.apache.axis.transport.local.LocalResponder"/>
  <ns1:handler name="Authenticate" type="java:org.apache.axis.handlers.SimpleAuthenticationHandler"/>
- <ns1:service name="Login" provider="java:RPC" style="wrapped" use="literal">
-  <ns2:operation name="addLogin" qname="ns1:addLogin" returnQName="ns1:addLoginReturn" returnType="xsd:string" soapAction="" xmlns:ns1="http://core.user.fws.com.br" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://xml.apache.org/axis/wsdd/">
-   <ns2:parameter qname="ns1:login" type="xsd:string"/>
-   <ns2:parameter qname="ns1:pwd" type="xsd:string"/>
-   <ns2:parameter qname="ns1:email" type="xsd:string"/>
+ <ns1:service name="User" provider="java:RPC" style="wrapped" use="literal">
+  <ns2:operation name="updateUser" qname="ns1:updateUser" returnQName="ns1:updateUserReturn" returnType="xsd:boolean" soapAction="" xmlns:ns1="http://core.user.fws.com.br" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://xml.apache.org/axis/wsdd/">
+   <ns3:parameter qname="ns1:user" type="ns2:UserInfo" xmlns:ns2="http://entity.user.fws.com.br" xmlns:ns3="http://xml.apache.org/axis/wsdd/"/>
   </ns2:operation>
-  <ns1:operation name="doLogin" qname="ns2:doLogin" returnQName="ns2:doLoginReturn" returnType="xsd:string" soapAction="" xmlns:ns2="http://core.user.fws.com.br" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-   <ns1:parameter qname="ns2:login" type="xsd:string"/>
-   <ns1:parameter qname="ns2:pwd" type="xsd:string"/>
+  <ns1:operation name="getAllUsers" qname="ns3:getAllUsers" returnQName="ns3:getAllUsersReturn" returnType="ns4:UserInfo" soapAction="" xmlns:ns3="http://core.user.fws.com.br" xmlns:ns4="http://entity.user.fws.com.br"/>
+  <ns1:parameter name="allowedMethods" value="getAllUsers updateUser"/>
+  <ns1:parameter name="wsdlPortType" value="User"/>
+  <ns1:parameter name="typeMappingVersion" value="1.2"/>
+  <ns1:parameter name="schemaQualified" value="http://entity.user.fws.com.br,http://core.user.fws.com.br"/>
+  <ns1:parameter name="wsdlServicePort" value="User"/>
+  <ns1:parameter name="className" value="br.com.fws.user.core.User"/>
+  <ns1:parameter name="wsdlTargetNamespace" value="http://core.user.fws.com.br"/>
+  <ns1:parameter name="wsdlServiceElement" value="UserService"/>
+  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns5:LoginInfo" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:br.com.fws.user.entity.LoginInfo" xmlns:ns5="http://entity.user.fws.com.br"/>
+  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns6:UserInfo" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:br.com.fws.user.entity.UserInfo" xmlns:ns6="http://entity.user.fws.com.br"/>
+ </ns1:service>
+ <ns1:service name="Login" provider="java:RPC" style="wrapped" use="literal">
+  <ns1:operation name="addLogin" qname="ns7:addLogin" returnQName="ns7:addLoginReturn" returnType="xsd:string" soapAction="" xmlns:ns7="http://core.user.fws.com.br" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <ns1:parameter qname="ns7:login" type="xsd:string"/>
+   <ns1:parameter qname="ns7:pwd" type="xsd:string"/>
+   <ns1:parameter qname="ns7:email" type="xsd:string"/>
+  </ns1:operation>
+  <ns1:operation name="doLogin" qname="ns8:doLogin" returnQName="ns8:doLoginReturn" returnType="xsd:string" soapAction="" xmlns:ns8="http://core.user.fws.com.br" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <ns1:parameter qname="ns8:login" type="xsd:string"/>
+   <ns1:parameter qname="ns8:pwd" type="xsd:string"/>
   </ns1:operation>
   <ns1:parameter name="allowedMethods" value="addLogin doLogin"/>
-  <ns1:parameter name="typeMappingVersion" value="1.2"/>
   <ns1:parameter name="wsdlPortType" value="Login"/>
-  <ns1:parameter name="className" value="br.com.fws.user.core.Login"/>
-  <ns1:parameter name="wsdlServicePort" value="Login"/>
+  <ns1:parameter name="typeMappingVersion" value="1.2"/>
   <ns1:parameter name="schemaQualified" value="http://core.user.fws.com.br"/>
+  <ns1:parameter name="wsdlServicePort" value="Login"/>
+  <ns1:parameter name="className" value="br.com.fws.user.core.Login"/>
   <ns1:parameter name="wsdlTargetNamespace" value="http://core.user.fws.com.br"/>
   <ns1:parameter name="wsdlServiceElement" value="LoginService"/>
  </ns1:service>

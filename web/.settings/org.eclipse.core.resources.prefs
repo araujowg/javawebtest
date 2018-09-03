@@ -1,0 +1,11 @@
+eclipse.preferences.version=1
+encoding//src/br/com/fws/user/core/GetAllUsers.java=UTF-8
+encoding//src/br/com/fws/user/core/GetAllUsersResponse.java=UTF-8
+encoding//src/br/com/fws/user/core/UpdateUser.java=UTF-8
+encoding//src/br/com/fws/user/core/UpdateUserResponse.java=UTF-8
+encoding//src/br/com/fws/user/core/User.java=UTF-8
+encoding//src/br/com/fws/user/core/UserService.java=UTF-8
+encoding//src/br/com/fws/user/core/UserServiceLocator.java=UTF-8
+encoding//src/br/com/fws/user/core/UserSoapBindingStub.java=UTF-8
+encoding//src/br/com/fws/user/entity/LoginInfo.java=UTF-8
+encoding//src/br/com/fws/user/entity/UserInfo.java=UTF-8

@@ -87,17 +87,17 @@ public class UserData extends DbBaseQueries<UserInfo> {
 				if (item.get("email") != null)
 					user.setEmail(item.get("email").getS());
 
-			if (item.containsKey("name"))
-				if (item.get("name") != null)
-					user.setName(item.get("name").getS());
+			if (item.containsKey("userName"))
+				if (item.get("userName") != null)
+					user.setName(item.get("userName").getS());
 
 			if (item.containsKey("userId"))
 				if (item.get("userId") != null)
 					user.setUserId(item.get("userId").getS());
 
-			if (item.containsKey("birthdate"))
-				if (item.get("birthdate") != null)
-					user.setBirthDate(item.get("birthdate").getS());
+			if (item.containsKey("birthDate"))
+				if (item.get("birthDate") != null)
+					user.setBirthDate(item.get("birthDate").getS());
 
 		} catch (Exception e) {
 			user = null;
@@ -113,17 +113,17 @@ public class UserData extends DbBaseQueries<UserInfo> {
 				if (item.get("email") != null)
 					user.setEmail(item.getString("email"));
 
-			if (item.isPresent("name"))
-				if (item.get("name") != null)
-					user.setName(item.getString("name"));
+			if (item.isPresent("userName"))
+				if (item.get("userName") != null)
+					user.setName(item.getString("userName"));
 
 			if (item.isPresent("userId"))
 				if (item.get("userId") != null)
 					user.setUserId(item.getString("userId"));
 
-			if (item.isPresent("birthdate"))
-				if (item.get("birthdate") != null)
-					user.setBirthDate(item.getString("birthdate"));
+			if (item.isPresent("birthDate"))
+				if (item.get("birthDate") != null)
+					user.setBirthDate(item.getString("birthDate"));
 
 		} catch (Exception e) {
 			user = null;
@@ -134,8 +134,9 @@ public class UserData extends DbBaseQueries<UserInfo> {
 	public final Map<String, AttributeValue> newItemWithAttribute(UserInfo object) {
 		Map<String, AttributeValue> item = new HashMap<String, AttributeValue>();
 		item.put("email", new AttributeValue(object.getEmail()));
-		item.put("name", new AttributeValue(object.getName()));
-		item.put("userId", new AttributeValue(object.toString()));
+		item.put("userName", new AttributeValue(object.getName()));
+		item.put("userId", new AttributeValue(object.getUserId()));
+		item.put("birthDate", new AttributeValue(object.getBirthDate()));
 		return item;
 	}
 
@@ -207,7 +208,7 @@ public class UserData extends DbBaseQueries<UserInfo> {
 
 			Condition condition = new Condition().withComparisonOperator(ComparisonOperator.CONTAINS.toString())
 					.withAttributeValueList(new AttributeValue().withS(name));
-			scan.put("nome", condition);
+			scan.put("userName", condition);
 			users = scanResultToListObject(scan);
 		} catch (Exception e) {
 			throw e;
@@ -225,7 +226,7 @@ public class UserData extends DbBaseQueries<UserInfo> {
 		UserInfo user = null;
 		try {
 			HashMap<String, String> nameMap = new HashMap<String, String>();
-			nameMap.put("#key", "name");
+			nameMap.put("#key", "userName");
 
 			HashMap<String, Object> valueMap = new HashMap<String, Object>();
 			valueMap.put(":name", name);
@@ -305,7 +306,7 @@ public class UserData extends DbBaseQueries<UserInfo> {
 
 		try {
 			UpdateItemSpec item = new UpdateItemSpec().withPrimaryKey("userId", user.getUserId())
-					.withUpdateExpression("set name = :newNome, birthdate = :birthdate")
+					.withUpdateExpression("set userName = :newName, birthDate = :birthdate")
 					.withValueMap(
 							new ValueMap().with(":newName", user.getName()).with(":birthdate", user.getBirthDate()))
 					.withReturnValues(ReturnValue.UPDATED_NEW);

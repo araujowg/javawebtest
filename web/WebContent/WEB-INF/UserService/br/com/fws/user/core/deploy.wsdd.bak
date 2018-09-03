@@ -1,0 +1,86 @@
+<!-- Use this file to deploy some handlers/chains and services      -->
+<!-- Two ways to do this:                                           -->
+<!--   java org.apache.axis.client.AdminClient deploy.wsdd          -->
+<!--      after the axis server is running                          -->
+<!-- or                                                             -->
+<!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   -->
+<!--      from the same directory that the Axis engine runs         -->
+
+<deployment
+    xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from UserService WSDL service -->
+
+  <service name="User" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://core.user.fws.com.br"/>
+      <parameter name="wsdlServiceElement" value="UserService"/>
+      <parameter name="schemaQualified" value="http://entity.user.fws.com.br,http://core.user.fws.com.br"/>
+      <parameter name="wsdlServicePort" value="User"/>
+      <parameter name="className" value="br.com.fws.user.core.UserSoapBindingImpl"/>
+      <parameter name="wsdlPortType" value="User"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="updateUser" qname="operNS:updateUser" xmlns:operNS="http://core.user.fws.com.br" returnQName="retNS:updateUserReturn" xmlns:retNS="http://core.user.fws.com.br" returnType="rtns:boolean" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="pns:user" xmlns:pns="http://core.user.fws.com.br" type="tns:UserInfo" xmlns:tns="http://entity.user.fws.com.br"/>
+      </operation>
+      <operation name="getAllUsers" qname="operNS:getAllUsers" xmlns:operNS="http://core.user.fws.com.br" returnQName="retNS:getAllUsersReturn" xmlns:retNS="http://core.user.fws.com.br" returnType="rtns:ArrayOf_xsd_anyType" xmlns:rtns="http://core.user.fws.com.br" returnItemQName="tns:item" xmlns:tns="http://core.user.fws.com.br" soapAction="" >
+      </operation>
+      <parameter name="allowedMethods" value="getAllUsers updateUser"/>
+
+      <arrayMapping
+        xmlns:ns="http://core.user.fws.com.br"
+        qname="ns:ArrayOf_xsd_anyType"
+        type="java:java.lang.Object[]"
+        innerType="cmp-ns:anyType" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://entity.user.fws.com.br"
+        qname="ns:LoginInfo"
+        type="java:br.com.fws.user.entity.LoginInfo"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://core.user.fws.com.br"
+        qname="ns:>updateUserResponse"
+        type="java:br.com.fws.user.core.UpdateUserResponse"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://core.user.fws.com.br"
+        qname="ns:>getAllUsers"
+        type="java:br.com.fws.user.core.GetAllUsers"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://core.user.fws.com.br"
+        qname="ns:>getAllUsersResponse"
+        type="java:br.com.fws.user.core.GetAllUsersResponse"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://core.user.fws.com.br"
+        qname="ns:>updateUser"
+        type="java:br.com.fws.user.core.UpdateUser"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://entity.user.fws.com.br"
+        qname="ns:UserInfo"
+        type="java:br.com.fws.user.entity.UserInfo"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+  </service>
+</deployment>
